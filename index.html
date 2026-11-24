@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Economy · Rúbrica de Presentaciones (2627-88052-A INGLÉS)</title>
+  <meta
+    name="description"
+    content="Herramienta de evaluación por rúbrica para presentaciones orales de Economy (4 temas, escala 0/3/5/7/10), seguimiento de 3 días y exportación directa a Canvas LMS."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Cabecera superior fija -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-block">
+        <h1 class="brand-title">Economy · Rúbrica de Presentaciones</h1>
+        <span class="brand-section" id="course-section-badge">2627-88052-A INGLÉS</span>
+      </div>
+
+      <div class="topbar-actions">
+        <div class="save-indicator" id="save-indicator" role="status" aria-live="polite">
+          <span class="save-dot" aria-hidden="true"></span>
+          <span id="save-status-text">Guardado localmente</span>
+        </div>
+
+        <button type="button" class="btn btn-secondary" id="btn-open-backup">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          Copia JSON
+        </button>
+
+        <button type="button" class="btn btn-primary" id="btn-open-export">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Exportar Canvas
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Resumen de avance -->
+    <section class="summary-strip" aria-label="Resumen de progreso">
+      <div class="summary-metrics">
+        <div class="metric">
+          <span class="metric-label">Evaluados</span>
+          <span class="metric-value is-complete" id="stat-complete">0 <small>/ 39</small></span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">En progreso</span>
+          <span class="metric-value is-partial" id="stat-partial">0</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Pendientes</span>
+          <span class="metric-value" id="stat-pending">39</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Media del grupo</span>
+          <span class="metric-value" id="stat-average">—</span>
+        </div>
+      </div>
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-fill-complete" id="progress-complete" style="width: 0%"></div>
+        <div class="progress-fill-partial" id="progress-partial" style="width: 0%"></div>
+      </div>
+    </section>
+
+    <!-- Nombres editables de los 4 temas -->
+    <section class="topics-bar" aria-label="Nombres de los 4 temas">
+      <span class="topics-bar-label">Temas</span>
+      <div class="topics-grid">
+        <label class="topic-edit-item">
+          <span class="topic-index">T1</span>
+          <input type="text" class="topic-input" id="topic-input-0" data-topic-index="0" maxlength="60" placeholder="Tema 1" aria-label="Nombre del Tema 1" />
+        </label>
+        <label class="topic-edit-item">
+          <span class="topic-index">T2</span>
+          <input type="text" class="topic-input" id="topic-input-1" data-topic-index="1" maxlength="60" placeholder="Tema 2" aria-label="Nombre del Tema 2" />
+        </label>
+        <label class="topic-edit-item">
+          <span class="topic-index">T3</span>
+          <input type="text" class="topic-input" id="topic-input-2" data-topic-index="2" maxlength="60" placeholder="Tema 3" aria-label="Nombre del Tema 3" />
+        </label>
+        <label class="topic-edit-item">
+          <span class="topic-index">T4</span>
+          <input type="text" class="topic-input" id="topic-input-3" data-topic-index="3" maxlength="60" placeholder="Tema 4" aria-label="Nombre del Tema 4" />
+        </label>
+      </div>
+    </section>
+
+    <!-- Filtros por día, estado, búsqueda y modo de vista -->
+    <section class="controls-bar" aria-label="Filtros y controles de evaluación">
+      <div class="controls-row">
+        <div class="day-tabs" id="day-tabs" role="tablist" aria-label="Filtrar por día de presentación">
+          <button type="button" class="day-tab is-active" data-day="all" role="tab" aria-selected="true">
+            Todos <span class="tab-count" id="count-day-all">39</span>
+          </button>
+          <button type="button" class="day-tab" data-day="1" role="tab" aria-selected="false">
+            Día 1 <span class="tab-count" id="count-day-1">0</span>
+          </button>
+          <button type="button" class="day-tab" data-day="2" role="tab" aria-selected="false">
+            Día 2 <span class="tab-count" id="count-day-2">0</span>
+          </button>
+          <button type="button" class="day-tab" data-day="3" role="tab" aria-selected="false">
+            Día 3 <span class="tab-count" id="count-day-3">0</span>
+          </button>
+          <button type="button" class="day-tab" data-day="0" role="tab" aria-selected="false">
+            Sin día <span class="tab-count" id="count-day-0">39</span>
+          </button>
+        </div>
+
+        <div class="right-controls">
+          <div class="segmented" id="status-filter" role="group" aria-label="Filtrar por estado">
+            <button type="button" class="seg-btn is-active" data-status="all">Todos</button>
+            <button type="button" class="seg-btn" data-status="pending">Pendientes</button>
+            <button type="button" class="seg-btn" data-status="partial">En progreso</button>
+            <button type="button" class="seg-btn" data-status="complete">Evaluados</button>
+          </div>
+
+          <div class="segmented" id="view-toggle" role="group" aria-label="Modo de visualización">
+            <button type="button" class="seg-btn is-active" data-view="list" id="btn-view-list">Lista</button>
+            <button type="button" class="seg-btn" data-view="focus" id="btn-view-focus">Modo Presentación</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls-row">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="search"
+            id="search-input"
+            class="search-input"
+            placeholder="Buscar alumno por nombre o ID..."
+            autocomplete="off"
+          />
+          <button type="button" class="search-clear" id="search-clear" hidden aria-label="Limpiar búsqueda">&times;</button>
+        </div>
+
+        <span class="field-help" id="filter-results-label">Mostrando 39 de 39 alumnos</span>
+      </div>
+    </section>
+
+    <!-- Vista Lista -->
+    <section id="list-view-container" class="rubric-sheet" aria-label="Listado de alumnos y rúbrica">
+      <div class="rubric-header" aria-hidden="true">
+        <div>Alumno y día</div>
+        <div class="rubric-header-topic" id="col-topic-0">Tema 1</div>
+        <div class="rubric-header-topic" id="col-topic-1">Tema 2</div>
+        <div class="rubric-header-topic" id="col-topic-2">Tema 3</div>
+        <div class="rubric-header-topic" id="col-topic-3">Tema 4</div>
+        <div class="rubric-header-final">Nota Final</div>
+      </div>
+      <div class="student-list" id="student-list"></div>
+    </section>
+
+    <!-- Vista Modo Presentación (Foco Individual) -->
+    <section id="focus-view-container" class="focus-shell" hidden aria-label="Modo presentación individual">
+      <div class="focus-nav">
+        <button type="button" class="btn btn-secondary" id="btn-focus-prev">&larr; Anterior</button>
+        <select id="focus-student-select" class="focus-jump" aria-label="Seleccionar alumno"></select>
+        <button type="button" class="btn btn-secondary" id="btn-focus-next">Siguiente &rarr;</button>
+      </div>
+      <div id="focus-card-slot"></div>
+    </section>
+  </main>
+
+  <!-- Modal: Exportar para Canvas -->
+  <div class="modal-backdrop" id="modal-export" role="dialog" aria-modal="true" aria-labelledby="modal-export-title" hidden>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-export-title">Exportar calificaciones para Canvas LMS</h2>
+        <button type="button" class="modal-close" data-close-modal="modal-export" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="field-group">
+          <label class="field-label" for="export-assignment-name">Nombre de la columna en Canvas</label>
+          <input
+            type="text"
+            id="export-assignment-name"
+            class="field-input"
+            value="Final Class Presentation"
+            placeholder="Ej. Final Class Presentation"
+          />
+          <p class="field-help">
+            Si la tarea aún no existe en Canvas, se creará automáticamente con <strong>10.00 puntos posibles</strong> al subir el archivo. Si ya existe, escribe su nombre exacto con el ID entre paréntesis (p. ej. <code>Final Class Presentation (601999)</code>).
+          </p>
+        </div>
+
+        <div class="callout" id="export-summary-callout"></div>
+
+        <label class="checkbox-row" id="export-partial-row" hidden>
+          <input type="checkbox" id="export-include-partial" />
+          <span>Incluir también la media provisional de los alumnos con evaluaciones incompletas (1–3 temas). Por defecto se dejan en blanco para evitar notas parciales en Canvas.</span>
+        </label>
+
+        <div class="field-group">
+          <span class="field-label">Vista previa del archivo CSV para Canvas</span>
+          <pre class="csv-preview" id="export-csv-preview"></pre>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btn-download-detailed-csv">
+          Desglose por temas (.csv)
+        </button>
+        <button type="button" class="btn btn-primary" id="btn-download-canvas-csv">
+          Descargar CSV para Canvas
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Copia de Seguridad (3 días) -->
+  <div class="modal-backdrop" id="modal-backup" role="dialog" aria-modal="true" aria-labelledby="modal-backup-title" hidden>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-backup-title">Guardado y Copia de Seguridad (3 días)</h2>
+        <button type="button" class="modal-close" data-close-modal="modal-backup" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="callout is-success">
+          Todos los cambios se guardan automáticamente en este navegador. Al finalizar cada día de presentaciones, descarga una copia en <strong>.json</strong> para conservar un respaldo o continuar en otro ordenador.
+        </div>
+
+        <div class="backup-section">
+          <h4>1. Descargar copia de seguridad</h4>
+          <p>Incluye todas las calificaciones de los 4 temas, los días asignados, los nombres personalizados de los temas y el nombre de la columna de Canvas.</p>
+          <div class="backup-actions-row">
+            <button type="button" class="btn btn-primary" id="btn-download-json">Descargar copia (.json)</button>
+          </div>
+        </div>
+
+        <div class="backup-section">
+          <h4>2. Restaurar copia desde archivo</h4>
+          <p>Selecciona un archivo <code>.json</code> descargado previamente para recuperar las notas guardadas.</p>
+          <div class="backup-actions-row">
+            <input type="file" id="input-restore-json" accept=".json,application/json" hidden />
+            <button type="button" class="btn btn-secondary" id="btn-pick-json">Seleccionar archivo .json</button>
+          </div>
+          <div id="restore-preview-area" hidden></div>
+        </div>
+
+        <div class="backup-section danger-zone">
+          <h4>Reiniciar evaluaciones</h4>
+          <p>Borra todas las notas y días asignados en este navegador para empezar desde cero.</p>
+          <div class="backup-actions-row">
+            <button type="button" class="btn btn-danger btn-sm" id="btn-reset-all">Borrar todas las notas</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-close-modal="modal-backup">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Región de notificaciones Toast -->
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <script defer src="data/students.js"></script>
+  <script defer src="js/canvasExport.js"></script>
+  <script defer src="js/storage.js"></script>
+  <script defer src="js/app.js"></script>
+</body>
+</html>
